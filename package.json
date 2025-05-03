@@ -3,21 +3,21 @@
   "version": "1.0.0",
   "description": "este es mi primer backend",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "test": "echo \"hola mundo\" ",
     "lint": "eslint src/**/*.ts",
     "dev": "nodemon --watch src/** --ext ts,json --ignore src/**/*.spec.ts --exec ts-node src/main.ts",
-    "serve": "node dist/main.js",
-    "start": "npm run build && npm run serve ",
+    "start": "npm run build && npm run dev ",
     "format": "prettier --write src/**/*.ts",
     "prepare": "husky"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^2.2.0",
     "express": "^5.1.0",
+    "mongoose": "^8.14.1",
     "save": "^2.9.0"
   },
   "devDependencies": {
@@ -34,5 +34,9 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.31.1"
+  },
+  "Dependencies": {
+    "express": "4.21.2",
+    "mongoose": "^8.12.1"
   }
 }
