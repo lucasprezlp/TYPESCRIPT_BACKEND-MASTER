@@ -1,72 +1,22 @@
+import "dotenv/config";
 import express from "express";
 import { ConnectDatabase } from "./database";
-import {listenItem, createItem, updateItem,removeItem} from './todo-list'
 import bodyParser from "body-parser";
-import { TTodoList } from "./todoList";
+import TodoRoutes from "./routes/todo-list.routes";
+import UserRoutes from "./routes/user.routes";
+import AuthRoutes from "./routes/auth.routes";
+import { validateToken } from "./middleware/jwt.middleware";
+import { patitoSecret } from "./middleware/ejemoplo.middeware";
+
+const port = process.env.PORT ?? 4001;
 
 const app = express();
-app.use(bodyParser.json())
-const port = 4000;
+app.use(bodyParser.json());
 
+app.use("/todos", patitoSecret, validateToken, TodoRoutes);
+app.use("/users", validateToken, UserRoutes);
+app.use("/auth", AuthRoutes);
 ConnectDatabase();
-
-
-app.get("/", async (req, res) => {
-  try {
-    const result = await listenItem();
-    res.status(200).json({ result });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-});
-
-app.post("/test", async (req, res) => {
-  const body = req.body;
-  res.status(200).json({body})
-});
-
-app.post("/", async (req, res) => {
-  const {title, description, done} = req.body
-
-try {
-  const newTodo: TTodoList = {
-    title,
-    description,
-    done
-  }
-  const data = await createItem(newTodo);
-  res.status(200).json({ data });
-} catch (error) {
-  res.status(500).json({ error });
-}
-});
-
-
-
-app.patch("/:id", async (req, res) => {
-  try {
-    const {id} = req.params
-    const body = req.body;
-    const data = await updateItem(id,body);
-    res.status(200).json({ data });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-  });
-  
-
-app.delete("/:id", async (req, res) => {
-  try {
-    const {id} = req.params
-    await removeItem(id);
-    res.status(200).json({ status:"ok" });
-  } catch (error) {
-    res.status(500).json({ error });
-  }
-  });
-
-
-
 
 app.listen(port, () => {
   console.log(`funcionado en el puerto ${port}`);
