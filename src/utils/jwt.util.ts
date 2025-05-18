@@ -12,7 +12,7 @@ export async function Sign(value: User) {
   });
 
   const refresh_token = jwt.sign({ token }, secret, {
-    expiresIn: 60 * 60 * 60 * 24 * 7, // 7 dias
+    expiresIn: 60 * 60 * 60 * 24 * 30, // 30 dias
   });
   return {
     token,
