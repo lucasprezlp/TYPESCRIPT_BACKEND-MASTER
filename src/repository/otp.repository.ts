@@ -1,5 +1,4 @@
-import OtpModel from "../schemas/otp.shema";
-
+import OtpModel from "../schemas/otp.schema";
 interface CreateOtpDTO {
   email: string;
   code: string;
@@ -16,6 +15,7 @@ class OtpRepository {
     if (!addedOtp) {
       throw new Error("code not found");
     }
+
     return addedOtp;
   }
 }

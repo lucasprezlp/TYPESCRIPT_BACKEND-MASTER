@@ -1,8 +1,6 @@
-import { compare } from "bcrypt";
-import UserRepository from "../repository/user.list.repositorio";
-import { encrypt } from "../utils/encryt";
+import UserRepository from "../repository/user.repository";
+import { encrypt, compare } from "../utils/encrypt";
 import { Sign } from "../utils/jwt.util";
-
 interface CreateUserDTO {
   email: string;
   password: string;
@@ -40,7 +38,7 @@ class UserService {
     return UserRepository.delete(id);
   }
 
-  async getTodosbyUser(user: string) {
+  async getTodosByUser(user: string) {
     return UserRepository.getTodosByUser(user);
   }
 
@@ -58,14 +56,21 @@ class UserService {
       _id: user._id.toString() ?? "",
       email: user.email ?? "",
     });
+
     return token;
   }
 
   async refreshToken(user: { _id: string; email: string }) {
-    const token = await Sign(user);
-    return token;
+    try {
+      const token = await Sign(user);
+      console.log(token);
+      return token;
+    } catch (err) {
+      console.log({ err });
+    }
   }
 }
 
 const userService = new UserService();
+
 export default userService;

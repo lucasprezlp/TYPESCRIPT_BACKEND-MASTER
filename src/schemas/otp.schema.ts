@@ -6,7 +6,7 @@ export type TOtp = {
   expireAt: Date;
 };
 
-export interface ITOtp extends TOtp, Document {}
+export interface IOTp extends TOtp, Document {}
 
 const EXP_SECONDS: number = parseInt(process.env.OPT_EXP_SECONDS ?? "300");
 
@@ -20,6 +20,7 @@ export const otpSchema = new Schema(
     },
     expireAt: {
       type: Date,
+      default: Date.now,
       index: {
         expireAfterSeconds: EXP_SECONDS,
         partialFilterExpression: { verified: false },
@@ -28,7 +29,7 @@ export const otpSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      expires: 10,
+      expires: EXP_SECONDS,
     },
   },
   {
@@ -38,4 +39,5 @@ export const otpSchema = new Schema(
 );
 
 const Otp = model("otp", otpSchema);
+
 export default Otp;

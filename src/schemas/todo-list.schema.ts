@@ -4,6 +4,7 @@ export type TTodoList = {
   title: string;
   description: string;
   done: boolean;
+  user: string;
 };
 
 export interface ITodoList extends TTodoList, Document {}
@@ -17,7 +18,7 @@ export const todoListSchema = new Schema(
       type: String,
     },
     done: {
-      type: String,
+      type: Boolean,
     },
     archived: {
       type: Boolean,
@@ -31,4 +32,5 @@ export const todoListSchema = new Schema(
 );
 
 const TodoList = model("todoList", todoListSchema);
+
 export default TodoList;

@@ -1,4 +1,4 @@
-import UserModel from "../schemas/user.list.schema";
+import UserModel from "../schemas/user.schema";
 import TodoModel from "../schemas/todo-list.schema";
 interface CreateTodoDTO {
   email: string;
@@ -30,7 +30,7 @@ class UserRepository {
   }
 
   async update(_id: string, todoChanges: Partial<CreateTodoDTO>) {
-    const updateItem = await UserModel.findOneAndUpdate(
+    const updatedItem = await UserModel.findOneAndUpdate(
       { _id },
       {
         $set: todoChanges,
@@ -39,7 +39,8 @@ class UserRepository {
         new: true,
       },
     );
-    return updateItem;
+
+    return updatedItem;
   }
 
   async delete(_id: string) {
@@ -55,6 +56,7 @@ class UserRepository {
     return TodoModel.find({ user });
   }
 }
+
 const userRepository = new UserRepository();
 
 export default userRepository;

@@ -4,8 +4,8 @@ import UserService from "../services/user.service";
 class UserController {
   async get(req: Request, res: Response) {
     try {
-      const usuarios = await UserService.getAll();
-      res.status(200).json({ data: usuarios });
+      const todos = await UserService.getAll();
+      res.status(200).json({ data: todos });
     } catch (error) {
       res.status(500).json({ error });
     }
@@ -19,7 +19,7 @@ class UserController {
         password,
         name,
       });
-      await res.status(200).json({ data: user });
+      res.status(200).json({ data: user });
     } catch (error) {
       res.status(500).json({ error });
     }
@@ -29,6 +29,7 @@ class UserController {
     try {
       const { id } = req.params;
       const { email, password, name } = req.body;
+
       const todos = await UserService.update(id, {
         email,
         password,
@@ -43,6 +44,7 @@ class UserController {
   async remove(req: Request, res: Response) {
     try {
       const { id } = req.params;
+
       await UserService.remove(id);
       res.status(200).json({ data: "ok" });
     } catch (error) {
@@ -50,16 +52,18 @@ class UserController {
     }
   }
 
-  async getTodoByUser(req: Request, res: Response) {
+  async getTodosByUser(req: Request, res: Response) {
     try {
       const user_id = (req.headers.user_id as string) ?? "";
-      await UserService.getTodosbyUser(user_id);
-      res.status(200).json({ data: "ok" });
+      console.log({ user_id });
+      const todos = await UserService.getTodosByUser(user_id);
+      res.status(200).json({ data: todos });
     } catch (error) {
       res.status(500).json({ error });
     }
   }
 }
+
 const userController = new UserController();
 
 export default userController;

@@ -1,0 +1,36 @@
+name: Deploy to production
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+      - name: setup nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: npm
+      - name: install dependencies
+        run: npm install
+      - name: testing
+        run: npm test
+      - name: build
+        run: npm run build
+      - name: connect to aws
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.SHH_HOST}}
+          username: ${{secrets.SSH_USERNAME}}
+          key: ${{secrets.SSH_KEY}}
+          script: |
+            pm2 stop todolist
+            cd /home/ec2-user/backend
+            git reset --hard
+            git pull origin master
+            npm install
+            npm run build
+            pm2 start todolist

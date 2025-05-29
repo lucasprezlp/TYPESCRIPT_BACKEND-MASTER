@@ -16,7 +16,6 @@ class TodoRepository {
     const result = await TodoModel.find({ user, archived: false })
       .populate("user")
       .exec();
-
     return result;
   }
 
@@ -26,7 +25,7 @@ class TodoRepository {
   }
 
   async update(_id: string, user: string, todoChanges: Partial<CreateTodoDTO>) {
-    const updateItem = await TodoModel.findOneAndUpdate(
+    const updatedItem = await TodoModel.findOneAndUpdate(
       { _id, user },
       {
         $set: todoChanges,
@@ -35,7 +34,8 @@ class TodoRepository {
         new: true,
       },
     );
-    return updateItem;
+
+    return updatedItem;
   }
 
   async delete(_id: string, user: string) {
@@ -47,6 +47,7 @@ class TodoRepository {
     );
   }
 }
+
 const todoRepository = new TodoRepository();
 
 export default todoRepository;

@@ -1,23 +1,14 @@
 import "dotenv/config";
-import express from "express";
 import { ConnectDatabase } from "./database";
-import bodyParser from "body-parser";
-import TodoRoutes from "./routes/todo-list.routes";
-import UserRoutes from "./routes/user.routes";
-import AuthRoutes from "./routes/auth.routes";
-import { validateToken } from "./middleware/jwt.middleware";
-import { patitoSecret } from "./middleware/ejemoplo.middeware";
+import CreateServer from "./server";
+const port = process.env.PORT ?? 4000;
 
-const port = process.env.PORT ?? 4001;
+async function bootstrap() {
+  await ConnectDatabase();
+  const app = CreateServer();
+  app.listen(port, () => {
+    console.log(`servidor funcionando ${port}`);
+  });
+}
 
-const app = express();
-app.use(bodyParser.json());
-
-app.use("/todos", patitoSecret, validateToken, TodoRoutes);
-app.use("/users", validateToken, UserRoutes);
-app.use("/auth", AuthRoutes);
-ConnectDatabase();
-
-app.listen(port, () => {
-  console.log(`funcionado en el puerto ${port}`);
-});
+bootstrap().catch((error) => console.log(error));

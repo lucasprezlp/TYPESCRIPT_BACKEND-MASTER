@@ -7,6 +7,6 @@ router.get("/", UserController.get);
 router.post("/", UserController.create);
 router.patch("/:id", UserController.update);
 router.delete("/:id", UserController.remove);
-router.get("/todos", UserController.getTodoByUser);
+router.get("/todos", UserController.getTodosByUser);
 
 export default router;

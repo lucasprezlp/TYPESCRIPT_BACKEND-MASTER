@@ -11,11 +11,11 @@ export async function validateToken(
     const token = header.split(" ")[1];
     const user = (await ValidateToken(token)) as { _id: string };
     if (!user._id) {
-      res.status(403).json({ error: "usuario no autenticado" });
+      res.status(403).json({ error: "Usuario no autenticado" });
     }
     req.headers.user_id = user._id;
     next();
   } catch (err) {
-    res.status(403).json({ error: "usuario no autenticado", details: err });
+    res.status(403).json({ error: "Usuario no autenticado", details: err });
   }
 }
